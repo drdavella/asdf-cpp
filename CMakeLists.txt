@@ -21,7 +21,8 @@ ExternalProject_Add(yaml-cpp-extern
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/yaml-cpp
     GIT_REPOSITORY https://github.com/drdavella/yaml-cpp
     GIT_TAG easier-to-inherit
-    CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
+    STEP_TARGETS build
+    EXCLUDE_FROM_ALL TRUE
 )
 
 # Unfortunately find_package doesn't work with CMake ExternalProjects, so we
@@ -37,7 +38,7 @@ set (YAML_INCLUDE_DIR "${YAML_CPP_DIR}/include")
 set (YAML_LIBRARIES "${YAML_CPP_DIR}-build/libyaml-cpp.a")
 add_library(yaml-cpp STATIC IMPORTED)
 set_property(TARGET yaml-cpp PROPERTY IMPORTED_LOCATION ${YAML_LIBRARIES})
-add_dependencies( yaml-cpp yaml-cpp-extern )
+add_dependencies( yaml-cpp yaml-cpp-extern-build )
 
 # Look for optional compression packages
 find_package(zlib)
